@@ -39,6 +39,7 @@
         - docker.io
         - ufw
         - npm
+        - nodejs-legacy
 
     - name: remove junk
       action: apt name={{item}} state=absent
