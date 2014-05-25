@@ -5,6 +5,8 @@ This set of Ansible scripts sets up a complete development environment on Ubuntu
 - Scala with sbt
 - Javascript with Node and npm
 
+Remove references to node, npm, nginx, java and sbt if you want just a clean Haskell environment.
+
 The scripts also remove a bunch of Ubuntu bundled junk.
 To run this do the following after changing the hosts file appropriately:
 
