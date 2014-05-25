@@ -152,6 +152,9 @@
         src="build.sbt"
         dest="~/.sbt/0.13/plugins"
 
+    - name: install yeoman
+      action: command npm install -g yo creates=/usr/local/bin/yo
+
  #   - name: install haskell emacs stuff
  #     sudo: false
  #     action: command git clone -b haskell --depth=1 git://github.com/dysinger/el-get ~/.emacs.d/el-get-haskell creates=~/.emacs.d/el-get-haskell
