@@ -19,7 +19,7 @@ Log on to the host and run (this kept failing via ansible for some reason):
 Start Emacs on the host and let it download the required Haskell packages. Emacs should now work as a Haskell IDE with auto-complete and all!
 
 ## Testing the set-up with Haskell
-Follow (Tim Dysingers instructions)[http://tim.dysinger.net/posts/2014-02-18-haskell-with-emacs.html] under the heading **Test Spin** after running the following to create an empty hello world Cabal project (lifted from the very same blog post):
+Follow [Tim Dysingers instructions](http://tim.dysinger.net/posts/2014-02-18-haskell-with-emacs.html) under the heading **Test Spin** after running the following to create an empty hello world Cabal project (lifted from the very same blog post):
 
 	# initialize a project
 	mkdir -p ~/src/haskell-hello
@@ -38,4 +38,4 @@ Then:
 	./.cabal-sandbox/bin/haskell-hello
 
 ## Credits & acknowledgements
-Without (Tim Dysingers)[https://twitter.com/dysinger] help and excellent (blog post)[http://tim.dysinger.net/posts/2014-02-18-haskell-with-emacs.html] from which much of this is derived and just translated into Ansible automation scripts, none of this would have been possible.
+Without [Tim Dysingers](https://twitter.com/dysinger) help and excellent [blog post](http://tim.dysinger.net/posts/2014-02-18-haskell-with-emacs.html) from which much of this is derived and just translated into Ansible automation scripts, none of this would have been possible.
