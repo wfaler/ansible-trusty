@@ -1,0 +1,156 @@
+---
+- hosts: dev-machine
+  sudo: yes
+
+  tasks:
+    - name: ensure software-properties-common is installed
+      action: apt pkg=software-properties-common force=yes
+
+    - name: ensure python-software-properties is installed
+      action: apt pkg=python-software-properties force=yes
+
+    - name: ensure nginx repository is registered
+      action: apt_repository repo=ppa:nginx/stable
+
+    - name: ensure java repository is registered
+      action: apt_repository repo=ppa:webupd8team/java
+
+    - name: ensure emacs repository is registered
+      action: apt_repository repo=ppa:cassou/emacs
+
+    - name: ensure apt cache is updated
+      action: apt update_cache=yes
+
+    - name: ensure all software is installed
+      action: apt name={{item}}
+      with_items:
+        - emacs24
+        - tmux
+        - unzip
+        - gnupg
+        - s3cmd
+        - git
+        - haskell-platform
+        - texinfo
+        - build-essential
+        - libncurses5-dev
+        - nginx
+        - nodejs
+        - docker.io
+        - ufw
+        - npm
+
+    - name: remove junk
+      action: apt name={{item}} state=absent
+      with_items:
+        - unity-scope-gdrive
+        - unity-lens-shopping
+        - empathy
+        - gnome-sudoku
+        - gnome-mines
+        - gnome-mahjongg
+        - aisleriot
+        - unity-webapps-common
+
+    - name: Autoaccept license for Java
+      action: shell echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+
+    - name: ensure java is installed
+      action: apt pkg=oracle-java8-installer force=yes
+
+    - name: ensure docker is linked
+      action: command ln -sf /usr/bin/docker.io /usr/local/bin/docker creates=/usr/local/bin/docker
+
+    - name: ensure bin directory exists
+      sudo: false
+      action: file dest=~/bin state=directory
+
+    - name: ensure .sbt directories exists
+      sudo: false
+      action: file dest=~/.sbt/0.13/plugins state=directory
+
+    - name: Get sbt
+      sudo: false
+      action: get_url url=http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.2/sbt-launch.jar dest=~/bin/sbt-launch.jar
+
+    - name: ensure .cabal and bin are in .profile
+      sudo: false
+      action: lineinfile dest=~/.profile state=present line='PATH=~/.cabal/bin:~/bin:$PATH'
+
+    - name: ensure .ssh directory exists
+      sudo: false
+      action: file dest=~/.ssh state=directory
+
+    - name: ensure .emacs.d directory exists
+      sudo: false
+      action: file dest=~/.emacs.d state=directory
+
+    - name: ensure known hosts
+      sudo: false
+      shell: touch ~/.ssh/known_hosts creates=~/.ssh/known_hosts
+
+    - name: remove github.com from known host
+      sudo: false
+      shell: ssh-keygen -R github.com
+
+    - name: ensure github.com in known host
+      sudo: false
+      shell: ssh-keyscan -H github.com > ~/.ssh/known_hosts
+
+    - name: update cabal repo
+      sudo: false
+      shell: cabal update
+
+    - name: install cabal
+      sudo: false
+      action: command cabal install cabal-install creates=~/.cabal/bin/cabal
+
+    - name: install haskell happy
+      sudo: false
+      action: command cabal install happy creates=~/.cabal/bin/happy
+
+    - name: install haskell alex
+      sudo: false
+      action: command cabal install alex creates=~/.cabal/bin/alex
+
+    - name: install haskell ghc-mod
+      sudo: false
+      action: command cabal install ghc-mod creates=~/.cabal/bin/ghc-mod
+
+    - name: install haskell ghci-ng
+      sudo: false
+      action: command cabal install ghci-ng creates=~/.cabal/bin/ghci-ng
+
+    - name: install haskell structured-haskell-mode
+      sudo: false
+      action: command cabal install structured-haskell-mode creates=~/.cabal/bin/structured-haskell-mode
+
+    - name: install haskell stylish-haskell
+      sudo: false
+      action: command cabal install stylish-haskell creates=~/.cabal/bin/stylish-haskell
+
+    - name: configure init.el
+      sudo: false
+      template:
+        src="init.el"
+        dest="~/.emacs.d/init.el"
+
+    - name: ensure sbt script
+      sudo: false
+      template:
+        src="sbt"
+        dest="~/bin/sbt"
+
+    - name: ensure sbt has correct permissions
+      sudo: false
+      action: file path=~/bin/sbt mode=0755
+
+    - name: ensure sbt plugins
+      sudo: false
+      template:
+        src="build.sbt"
+        dest="~/.sbt/0.13/plugins"
+
+ #   - name: install haskell emacs stuff
+ #     sudo: false
+ #     action: command git clone -b haskell --depth=1 git://github.com/dysinger/el-get ~/.emacs.d/el-get-haskell creates=~/.emacs.d/el-get-haskell
