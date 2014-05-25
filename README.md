@@ -1,11 +1,11 @@
-# Development environment install with Ansible
+# Haskell dev environment install with Ansible for Ubuntu 14.04 LTS
 This set of Ansible scripts sets up a complete development environment on Ubuntu 14.04 for:
 
 - Haskell (with Emacs set up)
 - Scala with sbt
 - Javascript with Node and npm
 
-Remove references to node, npm, nginx, java and sbt if you want just a clean Haskell environment.
+Remove references to docker, node, npm, nginx, java and sbt if you want just a clean Haskell environment (I've included them as they are things I used regularly).
 
 The scripts also remove a bunch of Ubuntu bundled junk.
 To run this do the following after changing the hosts file appropriately:
