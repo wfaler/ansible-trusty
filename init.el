@@ -32,6 +32,7 @@
         solarized-theme
         find-file-in-project
         flycheck
+        flymake
         ))
 
 (el-get 'sync my:el-get-packages)
