@@ -10,7 +10,7 @@ Remove references to docker, node, npm, nginx, java and sbt if you want just a c
 The scripts also remove a bunch of Ubuntu bundled junk.
 To run this do the following after changing the hosts file appropriately:
 
-	ansible-playbook dev-machine.yml -i hosts --ask-pass --ask-sudo-pass --extra-vars "user=[your username]"
+	ansible-playbook dev-machine.yml -i hosts --ask-pass --ask-sudo-pass -u [your username] --extra-vars "user=[your username]"
 
 Start Emacs on the host and let it download the required Haskell packages. Emacs should now work as a Haskell IDE with auto-complete and all!
 
