@@ -9,9 +9,6 @@
     - name: ensure python-software-properties is installed
       action: apt pkg=python-software-properties force=yes
 
-    - name: ensure java repository is registered
-      action: apt_repository repo=ppa:webupd8team/java
-
     - name: ensure emacs repository is registered
       action: apt_repository repo=ppa:cassou/emacs
 
@@ -112,4 +109,3 @@
       template:
         src="init.el"
         dest="~/.emacs.d/init.el"
-   
