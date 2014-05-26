@@ -62,21 +62,9 @@
     - name: ensure docker is linked
       action: command ln -sf /usr/bin/docker.io /usr/local/bin/docker creates=/usr/local/bin/docker
 
-    - name: ensure bin directory exists
-      sudo: false
-      action: file dest=~/bin state=directory
-
-    - name: ensure .sbt directories exists
-      sudo: false
-      action: file dest=~/.sbt/0.13/plugins state=directory
-
-    - name: Get sbt
-      sudo: false
-      action: get_url url=http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.2/sbt-launch.jar dest=~/bin/sbt-launch.jar
-
     - name: ensure .cabal and bin are in .profile
       sudo: false
-      action: lineinfile dest=~/.profile state=present line='PATH=~/.cabal/bin:~/bin:$PATH'
+      action: lineinfile dest=~/.profile state=present line='PATH=~/.cabal/bin:~/bin:~/bin/gradle-1.12/bin:$PATH'
 
     - name: ensure .ssh directory exists
       sudo: false
@@ -130,11 +118,31 @@
       sudo: false
       action: command cabal install stylish-haskell creates=~/.cabal/bin/stylish-haskell
 
+    - name: ensure emacs dirtree is installed
+      sudo: false
+      git: repo=https://github.com/rtircher/dirtree.git dest=~/.emacs.d/dirtree
+
+    - name: ensure emacs haskell modes is installed
+      sudo: false
+      git: repo=https://github.com/dysinger/el-get.git version=haskell depth=1 dest=~/.emacs.d/el-get-haskell
+
     - name: configure init.el
       sudo: false
       template:
         src="init.el"
         dest="~/.emacs.d/init.el"
+# Everything below this is entirely irrelevant for Haskell
+    - name: ensure bin directory exists
+      sudo: false
+      action: file dest=~/bin state=directory
+
+    - name: ensure .sbt directories exists
+      sudo: false
+      action: file dest=~/.sbt/0.13/plugins state=directory
+
+    - name: Get sbt
+      sudo: false
+      action: get_url url=http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.2/sbt-launch.jar dest=~/bin/sbt-launch.jar
 
     - name: ensure sbt script
       sudo: false
@@ -155,6 +163,18 @@
     - name: install yeoman
       action: command npm install -g yo creates=/usr/local/bin/yo
 
- #   - name: install haskell emacs stuff
- #     sudo: false
- #     action: command git clone -b haskell --depth=1 git://github.com/dysinger/el-get ~/.emacs.d/el-get-haskell creates=~/.emacs.d/el-get-haskell
+    - name: install jshint
+      action: command npm install -g jshint creates=/usr/local/bin/jshint
+
+    - name: Unzip Gradle
+      sudo: false
+      action: unarchive src=gradle-1.12-bin.zip dest=/home/wfaler/bin
+
+    - name: untar ensime
+      sudo: false
+      action: unarchive src=ensime_2.10.0-0.9.8.9.tar.gz dest=/home/wfaler/.emacs.d
+
+    - name: ensure gradleopts are in .profile
+      sudo: false
+      action: lineinfile dest=~/.profile state=present line='GRADLE_OPTS="-Xms512M -Xmx1536M -Xss128M"'
+

@@ -23,6 +23,18 @@
 ;; EL-GET SYNC OVERLAYS
 (el-get-sync-recipes "el-get-haskell")
 (el-get-sync-recipes "el-get-user")
+
+(setq my:el-get-packages
+      '(markdown-mode
+        scala-mode2
+        yaml-mode
+        js2-mode
+        solarized-theme
+        find-file-in-project
+        flycheck
+        ))
+
+(el-get 'sync my:el-get-packages)
 ;; CUSTOM FILE
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (load custom-file 'noerror)
@@ -37,18 +49,24 @@
 (server-start)
 
 (setq-default indent-tabs-mode nil)
+(define-key global-map (kbd "RET") 'newline-and-indent)
 
-;; add dirtree, ffip, js2-mode, scala-mode2, yaml-mode, markdown-mode
-;; uncomment once ensime etc are downloaded
-;;(add-to-list 'load-path "~/.emacs.d/ensime_2.10.0-0.9.8.9/elisp")
-;;(load-theme 'solarized-dark t)
+(add-to-list 'load-path "~/.emacs.d/ensime_2.10.0-0.9.8.9/elisp")
+(load-theme 'solarized-dark t)
 
-;;(require 'ensime)
+(require 'ensime)
 
-;;(require 'scala-mode2)
-;;(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+(require 'scala-mode2)
+(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
-;;(require 'js2-mode)
-;;(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(require 'js2-mode)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
-;;(setq js2-indent-level 2)
+(custom-set-variables  
+ '(js2-basic-offset 2)  
+ '(js2-bounce-indent-p t)  
+) 
+
+(add-to-list 'load-path "~/.emacs.d/dirtree")
+(byte-recompile-directory "~/.emacs.d/dirtree" 0)
+(autoload 'dirtree "dirtree" "Add directory to treeview" t)
