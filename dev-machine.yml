@@ -9,6 +9,12 @@
     - name: ensure python-software-properties is installed
       action: apt pkg=python-software-properties force=yes
 
+    - name: ensure postgres key is present
+      action: apt_key id=ACCC4CF8 state=present url="https://www.postgresql.org/media/keys/ACCC4CF8.asc"
+
+    - name: Ensure the postgres apt repository is added
+      action: apt_repository state=present repo='deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main'
+
     - name: ensure nginx repository is registered
       action: apt_repository repo=ppa:nginx/stable
 
@@ -28,18 +34,20 @@
         - tmux
         - unzip
         - gnupg
-        - s3cmd
         - git
         - haskell-platform
         - texinfo
         - build-essential
-        - libncurses5-dev
+        - libncurses5-dev # items after this not strictly required for Haskell
+        - s3cmd
         - nginx
         - nodejs
+        - ansible
         - docker.io
         - ufw
         - npm
         - nodejs-legacy
+        - postgresql-client
 
     - name: remove junk
       action: apt name={{item}} state=absent
@@ -168,11 +176,11 @@
 
     - name: Unzip Gradle
       sudo: false
-      action: unarchive src=gradle-1.12-bin.zip dest=/home/wfaler/bin
+      action: unarchive src=gradle-1.12-bin.zip dest=/home/{{user}}/bin
 
     - name: untar ensime
       sudo: false
-      action: unarchive src=ensime_2.10.0-0.9.8.9.tar.gz dest=/home/wfaler/.emacs.d
+      action: unarchive src=ensime_2.10.0-0.9.8.9.tar.gz dest=/home/{{user}}/.emacs.d
 
     - name: ensure gradleopts are in .profile
       sudo: false
