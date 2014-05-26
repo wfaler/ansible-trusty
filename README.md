@@ -5,12 +5,12 @@ This set of Ansible scripts sets up a complete development environment on Ubuntu
 - Scala with sbt
 - Javascript with Node and npm
 
-Remove references to docker, node, npm, nginx, java and sbt if you want just a clean Haskell environment (I've included them as they are things I used regularly).
+Remove references to docker, node, npm, nginx, java and sbt if you want just a clean Haskell environment, checkout the branch called _haskell_.
 
 The scripts also remove a bunch of Ubuntu bundled junk.
 To run this do the following after changing the hosts file appropriately:
 
-	ansible-playbook dev-machine.yml -i hosts --ask-pass --ask-sudo-pass --extra-vars "defaultUser=[your username]"
+	ansible-playbook dev-machine.yml -i hosts --ask-pass --ask-sudo-pass --extra-vars "user=[your username]"
 
 Start Emacs on the host and let it download the required Haskell packages. Emacs should now work as a Haskell IDE with auto-complete and all!
 
