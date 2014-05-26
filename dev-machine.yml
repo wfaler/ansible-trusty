@@ -11,7 +11,7 @@
 
     - name: ensure spotify key is present
       action: apt_key id=94558F59 state=present url="http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x082CCEDF94558F59"
-      
+
     - name: ensure spotify repo is present
       action: apt_repository state=present repo='deb http://repository.spotify.com stable non-free'
 
@@ -31,7 +31,7 @@
       action: apt_repository repo=ppa:cassou/emacs
 
     - name: ensure ansible repository is registered
-      action: apt_repository repo=rquillo/ansible
+      action: apt_repository repo=ppa:rquillo/ansible
 
     - name: ensure apt cache is updated
       action: apt update_cache=yes
@@ -59,9 +59,9 @@
         - postgresql-client
         - vlc
         - gnucash
-        - spotify-client
-        - texlive-full
         - ansible
+        #- spotify-client
+        # texlive-full
 
     - name: remove junk
       action: apt name={{item}} state=absent
@@ -84,7 +84,7 @@
       action: file path=~/bin/fixubuntu.sh mode=0755
 
     - name: fix ubuntu remove shopping scopes
-      action: command /home/{{user}}/bin/fixubuntu.sh 
+      action: command /home/{{user}}/bin/fixubuntu.sh
 
     - name: Autoaccept license for Java
       action: shell echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
