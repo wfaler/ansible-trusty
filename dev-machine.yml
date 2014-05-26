@@ -74,7 +74,7 @@
         - gnome-mahjongg
         - aisleriot
         - unity-webapps-common
-        
+
     - name: ensure bin directory exists
       sudo: false
       action: file dest=~/bin state=directory
@@ -90,7 +90,7 @@
     - name: ensure fixubuntu has correct permissions
       sudo: false
       action: file path=~/bin/fixubuntu.sh mode=0755
-      
+
     - name: fix ubuntu remove shopping scopes
       action: command /home/{{user}}/bin/fixubuntu.sh
 
