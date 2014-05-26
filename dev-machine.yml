@@ -9,6 +9,12 @@
     - name: ensure python-software-properties is installed
       action: apt pkg=python-software-properties force=yes
 
+    - name: ensure spotify key is present
+      action: apt_key id=94558F59 state=present url="http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x082CCEDF94558F59"
+      
+    - name: ensure spotify repo is present
+      action: apt_repository state=present repo='deb http://repository.spotify.com stable non-free'
+
     - name: ensure postgres key is present
       action: apt_key id=ACCC4CF8 state=present url="https://www.postgresql.org/media/keys/ACCC4CF8.asc"
 
@@ -23,6 +29,9 @@
 
     - name: ensure emacs repository is registered
       action: apt_repository repo=ppa:cassou/emacs
+
+    - name: ensure ansible repository is registered
+      action: apt_repository repo=rquillo/ansible
 
     - name: ensure apt cache is updated
       action: apt update_cache=yes
@@ -48,6 +57,11 @@
         - npm
         - nodejs-legacy
         - postgresql-client
+        - vlc
+        - gnucash
+        - spotify-client
+        - texlive-full
+        - ansible
 
     - name: remove junk
       action: apt name={{item}} state=absent
