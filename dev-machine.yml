@@ -74,6 +74,10 @@
         - gnome-mahjongg
         - aisleriot
         - unity-webapps-common
+        
+    - name: ensure bin directory exists
+      sudo: false
+      action: file dest=~/bin state=directory
 
     - name: Get Shopping suggestion removal script
       sudo: false
@@ -83,10 +87,6 @@
       sudo: false
       action: file path=~/bin/fixubuntu.sh mode=0755
       
-    - name: ensure bin directory exists
-      sudo: false
-      action: file dest=~/bin state=directory
-
     - name: fix ubuntu remove shopping scopes
       action: command /home/{{user}}/bin/fixubuntu.sh
 
