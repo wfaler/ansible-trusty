@@ -60,8 +60,8 @@
         - vlc
         - gnucash
         - ansible
-        #- spotify-client
-        # texlive-full
+        - spotify-client
+        # texlive-full # requires 3GB! Takes ages
 
     - name: remove junk
       action: apt name={{item}} state=absent
@@ -74,6 +74,10 @@
         - gnome-mahjongg
         - aisleriot
         - unity-webapps-common
+
+    - name: ensure bin directory exists
+      sudo: false
+      action: file dest=~/bin state=directory
 
     - name: Get Shopping suggestion removal script
       sudo: false
@@ -165,9 +169,6 @@
         src="init.el"
         dest="~/.emacs.d/init.el"
 # Everything below this is entirely irrelevant for Haskell
-    - name: ensure bin directory exists
-      sudo: false
-      action: file dest=~/bin state=directory
 
     - name: ensure .sbt directories exists
       sudo: false
