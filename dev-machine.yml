@@ -9,15 +9,6 @@
     - name: ensure python-software-properties is installed
       action: apt pkg=python-software-properties force=yes
 
-    - name: ensure postgres key is present
-      action: apt_key id=ACCC4CF8 state=present url="https://www.postgresql.org/media/keys/ACCC4CF8.asc"
-
-    - name: Ensure the postgres apt repository is added
-      action: apt_repository state=present repo='deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main'
-
-    - name: ensure nginx repository is registered
-      action: apt_repository repo=ppa:nginx/stable
-
     - name: ensure java repository is registered
       action: apt_repository repo=ppa:webupd8team/java
 
@@ -39,15 +30,6 @@
         - texinfo
         - build-essential
         - libncurses5-dev # items after this not strictly required for Haskell
-        - s3cmd
-        - nginx
-        - nodejs
-        - ansible
-        - docker.io
-        - ufw
-        - npm
-        - nodejs-legacy
-        - postgresql-client
 
     - name: remove junk
       action: apt name={{item}} state=absent
@@ -60,19 +42,6 @@
         - gnome-mahjongg
         - aisleriot
         - unity-webapps-common
-
-    - name: Autoaccept license for Java
-      action: shell echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
-
-    - name: ensure java is installed
-      action: apt pkg=oracle-java8-installer force=yes
-
-    - name: ensure docker is linked
-      action: command ln -sf /usr/bin/docker.io /usr/local/bin/docker creates=/usr/local/bin/docker
-
-    - name: ensure .cabal and bin are in .profile
-      sudo: false
-      action: lineinfile dest=~/.profile state=present line='PATH=~/.cabal/bin:~/bin:~/bin/gradle-1.12/bin:$PATH'
 
     - name: ensure .ssh directory exists
       sudo: false
@@ -93,6 +62,10 @@
     - name: ensure github.com in known host
       sudo: false
       shell: ssh-keyscan -H github.com > ~/.ssh/known_hosts
+
+    - name: ensure .cabal and bin are in .profile
+      sudo: false
+      action: lineinfile dest=~/.profile state=present line='PATH=~/.cabal/bin:$PATH'
 
     - name: update cabal repo
       sudo: false
@@ -139,50 +112,4 @@
       template:
         src="init.el"
         dest="~/.emacs.d/init.el"
-# Everything below this is entirely irrelevant for Haskell
-    - name: ensure bin directory exists
-      sudo: false
-      action: file dest=~/bin state=directory
-
-    - name: ensure .sbt directories exists
-      sudo: false
-      action: file dest=~/.sbt/0.13/plugins state=directory
-
-    - name: Get sbt
-      sudo: false
-      action: get_url url=http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.2/sbt-launch.jar dest=~/bin/sbt-launch.jar
-
-    - name: ensure sbt script
-      sudo: false
-      template:
-        src="sbt"
-        dest="~/bin/sbt"
-
-    - name: ensure sbt has correct permissions
-      sudo: false
-      action: file path=~/bin/sbt mode=0755
-
-    - name: ensure sbt plugins
-      sudo: false
-      template:
-        src="build.sbt"
-        dest="~/.sbt/0.13/plugins"
-
-    - name: install yeoman
-      action: command npm install -g yo creates=/usr/local/bin/yo
-
-    - name: install jshint
-      action: command npm install -g jshint creates=/usr/local/bin/jshint
-
-    - name: Unzip Gradle
-      sudo: false
-      action: unarchive src=gradle-1.12-bin.zip dest=/home/{{user}}/bin
-
-    - name: untar ensime
-      sudo: false
-      action: unarchive src=ensime_2.10.0-0.9.8.9.tar.gz dest=/home/{{user}}/.emacs.d
-
-    - name: ensure gradleopts are in .profile
-      sudo: false
-      action: lineinfile dest=~/.profile state=present line='GRADLE_OPTS="-Xms512M -Xmx1536M -Xss128M"'
-
+   
