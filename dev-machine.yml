@@ -60,7 +60,11 @@
         - gnome-mahjongg
         - aisleriot
         - unity-webapps-common
-
+        
+    - name: ensure bin directory exists
+      sudo: false
+      action: file dest=~/bin state=directory
+      
     - name: Get Shopping suggestion removal script
       sudo: false
       action: get_url url=https://fixubuntu.com/fixubuntu.sh dest=~/bin/fixubuntu.sh
@@ -151,9 +155,6 @@
         src="init.el"
         dest="~/.emacs.d/init.el"
 # Everything below this is entirely irrelevant for Haskell
-    - name: ensure bin directory exists
-      sudo: false
-      action: file dest=~/bin state=directory
 
     - name: ensure .sbt directories exists
       sudo: false
