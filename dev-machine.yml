@@ -82,6 +82,10 @@
     - name: ensure fixubuntu has correct permissions
       sudo: false
       action: file path=~/bin/fixubuntu.sh mode=0755
+      
+    - name: ensure bin directory exists
+      sudo: false
+      action: file dest=~/bin state=directory
 
     - name: fix ubuntu remove shopping scopes
       action: command /home/{{user}}/bin/fixubuntu.sh
@@ -165,9 +169,6 @@
         src="init.el"
         dest="~/.emacs.d/init.el"
 # Everything below this is entirely irrelevant for Haskell
-    - name: ensure bin directory exists
-      sudo: false
-      action: file dest=~/bin state=directory
 
     - name: ensure .sbt directories exists
       sudo: false
