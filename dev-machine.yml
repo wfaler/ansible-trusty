@@ -61,6 +61,17 @@
         - aisleriot
         - unity-webapps-common
 
+    - name: Get Shopping suggestion removal script
+      sudo: false
+      action: get_url url=https://fixubuntu.com/fixubuntu.sh dest=~/bin/fixubuntu.sh
+
+    - name: ensure fixubuntu has correct permissions
+      sudo: false
+      action: file path=~/bin/fixubuntu.sh mode=0755
+
+    - name: fix ubuntu remove shopping scopes
+      action: command /home/{{user}}/bin/fixubuntu.sh 
+
     - name: Autoaccept license for Java
       action: shell echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
 
