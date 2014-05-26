@@ -71,3 +71,5 @@
 (add-to-list 'load-path "~/.emacs.d/dirtree")
 (byte-recompile-directory "~/.emacs.d/dirtree" 0)
 (autoload 'dirtree "dirtree" "Add directory to treeview" t)
+
+(global-set-key (kbd "C-x f") 'find-file-in-project)
